@@ -1,0 +1,161 @@
+// AUTHOR: Roynell Barclay
+// PURPOSE: Purpose of this sub-class is to collect the userName/Password from the user as a verification for the log in saving it.
+// COURSE: CPT187
+// DATE: 4/23/22 
+
+// Package title
+package edu.cpt187.barclay.exercise6;
+
+// Imported java classes
+import java.util.Scanner;
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+// Start of UserAccounts sub-class
+public class UserAccounts 
+{
+	// Declarations
+	// Constants
+	private final int NOT_FOUND = -1;
+	private final int RESET_VALUE = 0;
+	private final int MAXIMUM_RECORDS = 50;
+	
+	// User data arrays
+	private String[] userNames = new String[MAXIMUM_RECORDS];
+	private String[] passwords = new String[MAXIMUM_RECORDS];
+	
+	// variables
+	private String masterFileName = "";
+	private int recordCount = 0;
+	private int searchedIndex = 0;
+	
+	// Public default constructor
+	public UserAccounts(String borrowedFileName)
+	{
+		masterFileName = borrowedFileName;
+	} // End of constructor
+	
+	// Loads items from file
+	public void setUserAccountArrays()
+	{
+		// Tries to find a file, if it finds one then assigns arrays
+		try
+		{
+			// Reads user account info from file
+			Scanner infile = new Scanner(new FileInputStream(masterFileName));
+			recordCount = RESET_VALUE;
+			
+			// Runs-while the file has more lines
+			while(infile.hasNext() == true && recordCount < MAXIMUM_RECORDS)
+			{
+				// userName and password in read for each loop
+				userNames[recordCount] = infile.next();
+				passwords[recordCount] = infile.next();
+				recordCount++;
+			} // End of run-while
+			infile.close();
+		} // end of try statement
+		
+		// Catches error
+		catch(IOException ex)
+		{
+			recordCount = NOT_FOUND;
+		} // End catch
+	} // End of load items file
+	
+	// Sets the search index
+	public void setSearchedIndex(String borrowedUserName)
+	{
+		searchedIndex = getSeqSearch(borrowedUserName);
+	} // End of setter
+	
+	// Sets the search index - Overloaded method
+	public void setSearchedIndex(String borrowedUserName, String borrowedPassword)
+	{
+		searchedIndex = getSeqSearch(borrowedUserName);
+		
+		// Checks if the search index if the password is false, assigns not_Found to searchIndex
+		if (searchedIndex >= RESET_VALUE && getPasswordMatch(borrowedPassword) == false)
+		{
+			searchedIndex = NOT_FOUND;
+		} // end of if statement
+	} // End of setter
+	
+	public void setWriteOneRecord(String borrowedUserName, String borrowedPassword)
+	{
+		// Tries to find a file, if it finds one then writes data to file
+		try
+		{
+			// Change FileWriter(masterFileName, false) to true to save multiple accounts
+			PrintWriter filePW = new PrintWriter(new FileWriter(masterFileName, true));
+			filePW.printf("%s\t%s\t%n", borrowedUserName, borrowedPassword);
+			filePW.close();
+			
+			recordCount++;
+			
+		} // end of try statement
+			
+		// Catches error
+		catch(IOException ex)
+		{
+		} // End catch
+	} // End of setter
+	
+	// Getters
+	
+	// Returns the search results -- FIX
+	public int getSeqSearch(String borrowedBorrowedUserName)
+	{
+		// local variables
+		int localIndex = 0;
+		int localFound = NOT_FOUND;
+		
+		// Runs while index is less than recordCount
+		while (localIndex < recordCount)
+		{
+			// Checks if borrowed is equal to the stored username at index
+			if(userNames[localIndex].equalsIgnoreCase(borrowedBorrowedUserName))
+			{
+				localFound = localIndex;
+				localIndex = recordCount;
+			} // End of if
+			else
+			{
+				localIndex++; // increments localIndex
+			} // End if-else statement
+		} // End of run-while
+		return localFound;
+	} // End of getter	
+	
+	// Returns the search results -- FIX
+	public boolean getPasswordMatch(String borrowedBorrowedPassword)
+	{
+		return passwords[getSearchedIndex()].equals(borrowedBorrowedPassword);
+	} // End of getter	
+	
+	// Returns file name
+	public String getFileName()
+	{
+		return masterFileName;
+	} // End of getter
+	
+	// Returns the max record count
+	public int getMaximumRecords()
+	{
+		return MAXIMUM_RECORDS;
+	} // End of getter
+	
+	// Returns the record count
+	public int recordCount()
+	{
+		return recordCount;
+	} // End of getter
+	
+	// Returns the searchedIndex
+	public int getSearchedIndex()
+	{
+		return searchedIndex;
+	} // End of getter
+} // End of UserAccounts sub-class
