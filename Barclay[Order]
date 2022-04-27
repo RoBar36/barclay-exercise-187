@@ -1,0 +1,184 @@
+// Author: Roynell Barclay
+// Purpose: Order sub-class which collects order data which is used to retrieve totals. Invoked in main class
+// Course: CPT 187
+// Date: 04/19/22
+
+// Package title
+package edu.cpt187.barclay.exercise6;
+
+// Start of sub-class
+public class Order 
+{
+	// Constant
+	public final double TAX_RATE = 0.075;
+	
+	// Variables
+	// V: IDs
+	public int discountType = 0;
+	public int itemID = 0;
+	
+	// V: Item/Discount info
+	public String itemName = "";
+	public double itemPrice = 0.0;
+	public String discountName = "";
+	public double discountRate = 0.0;
+	
+	// V: Misc. info
+	public int howMany = 0;
+	public int lastItemSelectedIndex = 0;
+	public String prizeName = "";
+	
+	// Sub-class object declaration
+	public Order() 
+	{
+	} // End of public object
+	
+	// Setters
+	
+	// Sets last item selected index
+	public void setLastItemSelectedIndex(int borrowedSearchIndex)
+	{
+		lastItemSelectedIndex = borrowedSearchIndex;
+	} // End of setter
+	
+	// Sets item ID
+	public void setItemID(int[] borrowedItemIDs)
+	{
+		itemID = borrowedItemIDs[lastItemSelectedIndex];
+	} // End of setter
+	
+	// Sets the name of the item
+	public void setItemName(String[] borrowedItemNames)
+	{
+		itemName = borrowedItemNames[lastItemSelectedIndex];
+	} // End of setter
+	
+	// Sets the price of the item selected at the index
+	public void setItemPrice(double[] borrowedItemPrices)
+	{
+		itemPrice = borrowedItemPrices[lastItemSelectedIndex]; 
+	} // End of setter
+	
+	// Sets the quantity
+	public void setHowMany(String borrowedHowMany)
+	{
+		howMany = Integer.parseInt(borrowedHowMany);
+	} // End of setter
+	
+	// Sets the discount type
+	public void setDiscountType(char borrowedMenuSelection)
+	{
+		discountType = borrowedMenuSelection - 'A';
+	} // End of setter
+	
+	// Sets the discount name selected
+	public void setDiscountName(String[] borrowedDiscountNames)
+	{
+		discountName = borrowedDiscountNames[discountType];
+	} // End of setter
+	
+	// sets the discount rate
+	public void setDiscountRate(double[] borrowedDiscountRate)
+	{
+		// sets discountRate to the rate in the discountType index
+		discountRate = borrowedDiscountRate[discountType];
+	} // End of setter
+	
+	// sets the prize name
+	public void setPrizeName(String[] borrowedPrizeNames, int borrowedPrizeIndex)
+	{
+		prizeName = borrowedPrizeNames[borrowedPrizeIndex];
+	} // End of setter
+	
+	// sets decreaseInStock, reduces in-stock items
+	public void setDecreaseInStock(Inventory borrowedInventoryObject)
+	{
+		borrowedInventoryObject.setReduceStock(howMany); 
+	} // End of setter
+	
+	// Getters ----------
+	
+	// getInStockCount, returns inStockCount
+	public int getInStockCount(int[] borrowedInStockCounts)
+	{
+		return borrowedInStockCounts[lastItemSelectedIndex];
+	} // end of getter
+	
+	// returns the itemID
+	public int getItemID()
+	{
+		return itemID;
+	} // End of getter
+	
+	// returns itemName
+	public String getItemName()
+	{
+		return itemName;
+	} // end of getter
+	
+	// returns itemPrice
+	public double getItemPrice()
+	{
+		return itemPrice;
+	} // end of getter
+
+	// returns howMany
+	public int getHowMany()
+	{
+		return howMany;
+	} // end of getter
+	
+	// returns discountName
+	public String getDiscountName()
+	{
+		return discountName;
+	} // end of getter
+	
+	// returns discountRate
+	public double getDiscountRate()
+	{
+		return discountRate;
+	} // end of getter
+	
+	// returns calc. of discountAmount
+	public double getDiscountAmt()
+	{
+		return itemPrice * discountRate;
+	} // end of getter
+	
+	// returns calc. of discounted price
+	public double getDiscountPrice()
+	{
+		return itemPrice - getDiscountAmt();
+	} // end of getter
+	
+	// returns prizeName
+	public String getPrizeName()
+	{
+		return prizeName;
+	} // end of getter
+
+	// returns calc. of the subTotal
+	public double getSubTotal()
+	{
+		return getDiscountPrice() * howMany;
+	}  // end of getter
+	
+	// returns the constant tax rate
+	public double getTaxRate()
+	{
+		return TAX_RATE;
+	} // end of getter
+	
+	// returns calc. of the tax amount
+	public double getTaxAmt()
+	{
+		return getSubTotal() * TAX_RATE;
+	} // end of getter
+	
+	// returns calc. of the total cost
+	public double getTotalCost()
+	{
+		return getSubTotal() + getTaxAmt();
+	} // end of getter	
+} // End of Order sub-class
