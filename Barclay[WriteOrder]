@@ -1,0 +1,72 @@
+// Author: Roynell Barclay
+// Purpose: Sub-class for main which writes the order onto a new file. Used in main to retrieve totals
+// Course: CPT 187
+// Date: 04/19/22
+
+// Package title
+package edu.cpt187.barclay.exercise6;
+
+// Imported java classes
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+// Start of public sub-class
+public class WriteOrder
+{
+	// Declarations
+	 private boolean fileFoundFlag = false;
+	 private String masterFileName = "";
+	 private int recordCount = 0;
+	 
+	 // "Setters" - File writers
+	 
+	 // Non-default constructor, sets class to an object + assigns masterFileName
+	 public WriteOrder(String borrowedFileName)
+	 {
+		 masterFileName = borrowedFileName;
+	 } // End of constructor
+	 
+	 // Creates new file and writes text 
+	 public void setWriteOrder(int borrowedItemID, String borrowedItemName, double borrowedItemPrice, int borrowedQuantity, double borrowedOrderCost)
+	 {
+		
+		// Tries to find a file, if it finds one then writes data to file
+		try
+		{
+			PrintWriter filePW = new PrintWriter(new FileWriter(masterFileName, true));
+			filePW.printf("%d\t%s\t%f\t%d\t%f%n", borrowedItemID, borrowedItemName, borrowedItemPrice, borrowedQuantity, borrowedOrderCost);
+			filePW.close(); // File writer closes
+			
+			recordCount++;
+			fileFoundFlag = true;
+			
+		} // end of try statement
+			
+		// Catches error
+		catch(IOException ex)
+		{
+			fileFoundFlag = false;
+		} // End catch
+	 } // end of File writer
+	 
+	 // Getters
+	 
+	 // Returns the retrieved file found flag
+	 public boolean getFileFoundFlag()
+	 {
+		 return fileFoundFlag;
+	 } // End of getter
+	 
+	 // Returns the file name
+	 public String getFileName()
+	 {
+		 return masterFileName;
+	 } // End of getter
+	 
+	 // Returns the record count
+	 public int getRecordCount()
+	 {
+		 return recordCount;
+	 } // End of getter
+} // End of sub-class write purchase orders
